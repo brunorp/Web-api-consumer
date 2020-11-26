@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -38,7 +39,7 @@ namespace WebAPI.Controllers
             {
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(_configuration.
                     GetValue<double>("CacheManagement:CacheDuration"));
-                return _service.RequestApi(company);
+                return _service.RequestApi(new HttpClient(), company);
             });
         }
     }

@@ -20,15 +20,14 @@ namespace WebAPI.Tests
     {       
         
         private static Mock<HttpMessageHandler> mock = new Mock<HttpMessageHandler>();
-        private RepositoryService repo = new RepositoryService(new HttpClient(mock.Object));
+        private RepositoryService repo = new RepositoryService();
 
         [Fact]
         public async void ResponseTests()
         {
             HttpResponse();
 
-            var response = await repo.RequestApi("ibm");
-            Assert.NotEmpty(response);
+            var response = await repo.RequestApi(new HttpClient(mock.Object), "ibm");
             foreach (var item in response)
             {
                 Assert.NotEqual(item.Name, string.Empty);
@@ -42,7 +41,7 @@ namespace WebAPI.Tests
 
             HttpResponse();
 
-            Assert.NotNull(await repo.RequestApi("ibm"));
+            Assert.NotNull(await repo.RequestApi(new HttpClient(mock.Object), "ibm"));
             mock.Protected().Verify(
                "SendAsync",
                Times.Exactly(1),
