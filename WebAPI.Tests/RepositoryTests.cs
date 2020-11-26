@@ -12,7 +12,7 @@ using Xunit;
 
 namespace WebAPI.Tests
 {
-    public class MockTests
+    public class RepositoryTests
     {       
         
         private static Mock<HttpMessageHandler> mock = new Mock<HttpMessageHandler>();
