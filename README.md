@@ -18,9 +18,7 @@
 
 <ul>
   <li><a href="#-features">Features</a></li>
-  <li><a href="#-contributing">Contributing</a></li>
-  <li><a href="#-support">Support</a></li>
-  <li><a href="#-license">License</a></li>
+  <li><a href="#-references">References</a></li>
 </ul>
 
 ## 📋 Features
