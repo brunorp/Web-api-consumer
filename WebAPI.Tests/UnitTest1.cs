@@ -21,7 +21,7 @@ namespace WebAPI.Tests
         [Fact]
         public async void ResponseTests()
         {
-            HttpResponse("../../../Data/MockData.json", HttpStatusCode.OK);
+            RepetitiveMethod("../../../Data/MockData.json", HttpStatusCode.OK);
 
             var response = await repo.RequestApi(new HttpClient(mock.Object), "ibm");
             foreach (var item in response)
@@ -36,36 +36,31 @@ namespace WebAPI.Tests
         [Fact]
         public async void testRequestError()
         {
-            HttpResponse("../../../Data/MockData.json", HttpStatusCode.ServiceUnavailable);
+            RepetitiveMethod("../../../Data/MockData.json", HttpStatusCode.ServiceUnavailable);
 
             await Assert.ThrowsAsync<HttpRequestException>(
                 async () => await repo.RequestApi(new HttpClient(mock.Object), "ibm")
             );
         }
 
-         [Fact]
+        [Fact]
         public async void WrongResponseTests()
         {
-            HttpResponse("../../../Data/MockWrongData.json", HttpStatusCode.OK);
+            RepetitiveMethod("../../../Data/MockWrongData.json", HttpStatusCode.OK);
         
             await Assert.ThrowsAsync<HttpRequestException>(
                async () => await repo.RequestApi(new HttpClient(mock.Object), "ibm")
             );
         }
-    
-        private void HttpResponse(string dir, HttpStatusCode statusCode)
+
+        private void RepetitiveMethod(string dir, HttpStatusCode statusCode)
         {   
             var mockData = new StringContent(File.ReadAllText(dir));
-            RepetitiveMethod(statusCode, mockData);
-        }
-
-        private void RepetitiveMethod(HttpStatusCode statusCode, StringContent data)
-        {
-             mock.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+            mock.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
             .ReturnsAsync(new HttpResponseMessage
             {
                 StatusCode = statusCode,
-                Content = data
+                Content = mockData
             });
         }
     }
