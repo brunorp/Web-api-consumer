@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace WebAPI.Models
 {
+    [ExcludeFromCodeCoverage]
     public class Issue{
         [JsonPropertyName("id")]
         public int Id { get; set; }

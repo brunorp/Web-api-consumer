@@ -32,6 +32,8 @@ namespace WebAPI.Tests
             {
                 Assert.NotEqual(item.Name, string.Empty);
                 Assert.NotNull(item.Url);
+                Assert.NotEqual(item.Language, string.Empty);
+                Assert.NotNull(item.IssueUrl);
             }
         }
 
