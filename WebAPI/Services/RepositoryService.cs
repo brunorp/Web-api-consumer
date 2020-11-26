@@ -11,11 +11,7 @@ namespace WebAPI.Services
     public class RepositoryService : IRepositoryService
     {
         public async Task<List<Repository>> RequestApi(HttpClient _client, string company){
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json")
-            );
-            _client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+            ClientOptions(_client);
             var streamTask = _client.GetStreamAsync($"https://api.github.com/orgs/{company}/repos");
             var repositories = await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
             /*foreach(var repo in repositories){
@@ -23,6 +19,15 @@ namespace WebAPI.Services
                 repo.Issues = await JsonSerializer.DeserializeAsync<List<Issue>>(await t); 
             }*/
             return repositories;
+        }
+
+        private void ClientOptions(HttpClient _client)
+        {
+            _client.DefaultRequestHeaders.Accept.Clear();
+            _client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json")
+            );
+            _client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
         }
     }
 }
