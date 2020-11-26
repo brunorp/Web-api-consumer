@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
 using WebAPI.Models;
+using WebAPI.Public;
 
 namespace WebAPI.Services
 {
@@ -12,13 +13,18 @@ namespace WebAPI.Services
     {
         public async Task<List<Repository>> RequestApi(HttpClient _client, string company){
             ClientOptions(_client);
-            var streamTask = _client.GetStreamAsync($"https://api.github.com/orgs/{company}/repos");
-            var repositories = await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
-            /*foreach(var repo in repositories){
-                var t = client.GetStreamAsync($"https://api.github.com/repos/{company}/{repo.Name}/issues");
-                repo.Issues = await JsonSerializer.DeserializeAsync<List<Issue>>(await t); 
-            }*/
-            return repositories;
+            
+            try{
+                var streamTask = _client.GetStreamAsync($"https://api.github.com/orgs/{company}/repos");
+                var repositories = await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
+                foreach(var repo in repositories){
+                    if(repo.Name == null || repo.Url == null)
+                        throw new HttpRequestException("API connection failed");
+                }    
+                return repositories;
+            }catch(Exception){
+                throw new HttpRequestException("API connection failed");
+            }            
         }
 
         private void ClientOptions(HttpClient _client)

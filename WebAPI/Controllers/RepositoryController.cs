@@ -7,6 +7,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.FeatureManagement;
 using WebAPI.Models;
+using WebAPI.Public;
 using WebAPI.Services;
 
 namespace WebAPI.Controllers
