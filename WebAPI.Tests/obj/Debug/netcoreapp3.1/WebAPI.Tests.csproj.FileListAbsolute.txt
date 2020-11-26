@@ -114,3 +114,7 @@ c:\Users\BrunoRossettoPereira\Desktop\WebAPIClient\WebAPI.Tests\bin\Debug\netcor
 c:\Users\BrunoRossettoPereira\Desktop\WebAPIClient\WebAPI.Tests\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
 c:\Users\BrunoRossettoPereira\Desktop\WebAPIClient\WebAPI.Tests\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
 c:\Users\BrunoRossettoPereira\Desktop\WebAPIClient\WebAPI.Tests\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+c:\Users\BrunoRossettoPereira\Desktop\WebAPIClient\WebAPI.Tests\bin\Debug\netcoreapp3.1\FluentAssertions.dll
+c:\Users\BrunoRossettoPereira\Desktop\WebAPIClient\WebAPI.Tests\bin\Debug\netcoreapp3.1\System.Configuration.ConfigurationManager.dll
+c:\Users\BrunoRossettoPereira\Desktop\WebAPIClient\WebAPI.Tests\bin\Debug\netcoreapp3.1\System.Security.Cryptography.ProtectedData.dll
+c:\Users\BrunoRossettoPereira\Desktop\WebAPIClient\WebAPI.Tests\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll

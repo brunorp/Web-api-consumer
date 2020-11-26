@@ -1,16 +1,12 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Moq;
 using Moq.Protected;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using WebAPI.Services;
 using Xunit;
 
@@ -25,7 +21,7 @@ namespace WebAPI.Tests
         [Fact]
         public async void ResponseTests()
         {
-            HttpResponse();
+            HttpResponse("../../../Data/MockData.json", HttpStatusCode.OK);
 
             var response = await repo.RequestApi(new HttpClient(mock.Object), "ibm");
             foreach (var item in response)
@@ -36,32 +32,41 @@ namespace WebAPI.Tests
                 Assert.NotNull(item.IssueUrl);
             }
         }
-
+        
         [Fact]
-        public async void HttpResponseTests()
+        public async void testRequestError()
         {
+            HttpResponse("../../../Data/MockData.json", HttpStatusCode.ServiceUnavailable);
 
-            HttpResponse();
+            await Assert.ThrowsAsync<HttpRequestException>(
+                async () => await repo.RequestApi(new HttpClient(mock.Object), "ibm")
+            );
+        }
 
-            Assert.NotNull(await repo.RequestApi(new HttpClient(mock.Object), "ibm"));
-            mock.Protected().Verify(
-               "SendAsync",
-               Times.Exactly(1),
-               ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get),
-               ItExpr.IsAny<CancellationToken>());
+         [Fact]
+        public async void WrongResponseTests()
+        {
+            HttpResponse("../../../Data/MockWrongData.json", HttpStatusCode.OK);
+        
+            await Assert.ThrowsAsync<HttpRequestException>(
+               async () => await repo.RequestApi(new HttpClient(mock.Object), "ibm")
+            );
         }
     
-        private void HttpResponse()
+        private void HttpResponse(string dir, HttpStatusCode statusCode)
         {   
-            var mockData = new StringContent(File.ReadAllText("../../../MockData.json"));
-            var response = new HttpResponseMessage
+            var mockData = new StringContent(File.ReadAllText(dir));
+            RepetitiveMethod(statusCode, mockData);
+        }
+
+        private void RepetitiveMethod(HttpStatusCode statusCode, StringContent data)
+        {
+             mock.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(new HttpResponseMessage
             {
-                StatusCode = HttpStatusCode.OK,
-                Content = mockData
-            };
-            
-            mock.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(response);
+                StatusCode = statusCode,
+                Content = data
+            });
         }
     }
 }

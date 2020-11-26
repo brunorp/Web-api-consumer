@@ -11,21 +11,26 @@ namespace WebAPI.Services
 {
     public class RepositoryService : IRepositoryService
     {
+        private Error error = new Error();
         public async Task<List<Repository>> RequestApi(HttpClient _client, string company){
             ClientOptions(_client);
-            
+            var repositories = new List<Repository>();
             try{
                 var streamTask = _client.GetStreamAsync($"https://api.github.com/orgs/{company}/repos");
-                var repositories = await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
+                repositories = await JsonSerializer.DeserializeAsync<List<Repository>>(await streamTask);
                 foreach(var repo in repositories){
                     if(repo.Name == null || repo.Url == null)
-                        throw new HttpRequestException("API connection failed");
-                }    
-                return repositories;
+                           error.Message = "name or url are null";
+                }                
             }catch(Exception){
-                throw new HttpRequestException("API connection failed");
-            }            
+                error.Message = "API connection failed";
+            }      
+            if(error.Message != null)
+               throw new HttpRequestException(error.Message);    
+            else
+                return repositories; 
         }
+        
 
         private void ClientOptions(HttpClient _client)
         {
