@@ -16,24 +16,31 @@ using Xunit;
 
 namespace WebAPI.Tests
 {
-    public class UnitTest1
+    public class MockTests
     {       
+        
+        private static Mock<HttpMessageHandler> mock = new Mock<HttpMessageHandler>();
+        private RepositoryService repo = new RepositoryService(new HttpClient(mock.Object));
+
         [Fact]
-        public async void Test1()
-        {   
-            var mockData = new StringContent(System.IO.File.ReadAllText("c:/Users/BrunoRossettoPereira/Desktop/WebAPIClient/WebAPI.Tests/MockData.json"));
-            var response = new HttpResponseMessage
+        public async void ResponseTests()
+        {
+            HttpResponse();
+
+            var response = await repo.RequestApi("ibm");
+            Assert.NotEmpty(response);
+            foreach (var item in response)
             {
-                StatusCode = HttpStatusCode.OK,
-                Content = mockData
-            };
-            
-            var mock = new Mock<HttpMessageHandler>();
-            mock.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(response);
+                Assert.NotEqual(item.Name, string.Empty);
+                Assert.NotNull(item.Url);
+            }
+        }
 
-            var repo = new RepositoryService(new HttpClient(mock.Object));
+        [Fact]
+        public async void HttpResponseTests()
+        {
 
+            HttpResponse();
 
             Assert.NotNull(await repo.RequestApi("ibm"));
             mock.Protected().Verify(
@@ -41,6 +48,19 @@ namespace WebAPI.Tests
                Times.Exactly(1),
                ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get),
                ItExpr.IsAny<CancellationToken>());
+        }
+    
+        private void HttpResponse()
+        {   
+            var mockData = new StringContent(File.ReadAllText("../../../MockData.json"));
+            var response = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = mockData
+            };
+            
+            mock.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(response);
         }
     }
 }

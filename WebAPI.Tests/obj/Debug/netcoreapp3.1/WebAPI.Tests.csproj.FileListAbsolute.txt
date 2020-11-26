@@ -110,3 +110,7 @@ c:\Users\BrunoRossettoPereira\Desktop\WebAPIClient\WebAPI.Tests\obj\Debug\netcor
 c:\Users\BrunoRossettoPereira\Desktop\WebAPIClient\WebAPI.Tests\obj\Debug\netcoreapp3.1\WebAPI.Tests.dll
 c:\Users\BrunoRossettoPereira\Desktop\WebAPIClient\WebAPI.Tests\obj\Debug\netcoreapp3.1\WebAPI.Tests.pdb
 c:\Users\BrunoRossettoPereira\Desktop\WebAPIClient\WebAPI.Tests\obj\Debug\netcoreapp3.1\WebAPI.Tests.genruntimeconfig.cache
+c:\Users\BrunoRossettoPereira\Desktop\WebAPIClient\WebAPI.Tests\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+c:\Users\BrunoRossettoPereira\Desktop\WebAPIClient\WebAPI.Tests\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+c:\Users\BrunoRossettoPereira\Desktop\WebAPIClient\WebAPI.Tests\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+c:\Users\BrunoRossettoPereira\Desktop\WebAPIClient\WebAPI.Tests\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll

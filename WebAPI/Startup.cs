@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.FeatureManagement;
+using Microsoft.OpenApi.Models;
 using WebAPI.Services;
 
 namespace WebAPIClient
@@ -30,7 +31,16 @@ namespace WebAPIClient
             services.AddControllers();
             services.AddMemoryCache();
             services.AddFeatureManagement();
+            services.AddHttpClient();
             services.AddTransient<IRepositoryService, RepositoryService>();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Repositories API"
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +60,18 @@ namespace WebAPIClient
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+            
+            app.UseSwagger(c =>
+            {
+                c.SerializeAsV2 = true;
+            });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Repositories V1");
             });
         }
     }

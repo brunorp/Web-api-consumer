@@ -26,12 +26,11 @@ namespace WebAPI.Controllers
             _service = service;
         }
 
-        
         [HttpGet]
         [Route("{company}")]
         public async Task<List<Repository>> GetRepositoriesCache(string company)
         {
-            if (!await _featureManager.IsEnabledAsync(nameof(MyFeatureFlags.FeatureA)))
+            if (!await _featureManager.IsEnabledAsync(nameof(MyFeatureFlags.CacheRepositories)))
             {
                 _cache.Remove(company);
             }
