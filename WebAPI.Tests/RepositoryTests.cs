@@ -38,7 +38,7 @@ namespace WebAPI.Tests
         {
             RepetitiveMethod("../../../Data/MockData.json", HttpStatusCode.ServiceUnavailable);
 
-            await Assert.ThrowsAsync<HttpRequestException>(
+            await Assert.ThrowsAsync<Exception>(
                 async () => await repo.RequestApi(new HttpClient(mock.Object), "ibm")
             );
         }
@@ -48,7 +48,7 @@ namespace WebAPI.Tests
         {
             RepetitiveMethod("../../../Data/MockWrongData.json", HttpStatusCode.OK);
         
-            await Assert.ThrowsAsync<HttpRequestException>(
+            await Assert.ThrowsAsync<Exception>(
                async () => await repo.RequestApi(new HttpClient(mock.Object), "ibm")
             );
         }

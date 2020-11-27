@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace WebAPI.Models
 {
     public class Repository{
+        [Required(ErrorMessage = "Campo \"Name\" é obrigatório")]
         [JsonPropertyName("name")]
         public string Name { get; set; }
 

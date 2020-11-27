@@ -26,7 +26,7 @@ namespace WebAPI.Services
                 error.Message = "API connection failed";
             }      
             if(error.Message != null)
-               throw new HttpRequestException(error.Message);    
+               throw new Exception(error.Message);    
             else
                 return repositories; 
         }
